@@ -1,2 +1,4 @@
 language: python
+scripts:
+  - python -m unittest test.py
 
