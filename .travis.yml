@@ -1,4 +1,7 @@
+---
 language: python
-scripts:
+python: "3.5"
+
+script:
   - python -m unittest test.py
 
