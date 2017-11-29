@@ -14,9 +14,9 @@ python:
 
 before_install:
   - docker build -t lbigg/ci-travis .
-  - docker run -d -p 127.0.0.1:80 lbigg/ci-travis /bin/sh -c "cd /app; python test.py"
+  - docker run -d lbigg/ci-travis /bin/sh -c "cd /app; python3 test.py"
   - docker ps -a
-  - docker run lbigg/ci-travis /bin/sh -c "cd /app; python test.py"
+  - docker run lbigg/ci-travis /bin/sh -c "cd /app; python3 test.py"
 
 matrix:
   allow_failures:
@@ -26,5 +26,5 @@ matrix:
       - "3.6"
 
 script:
-  - python test.py
+  - python3 test.py
 
