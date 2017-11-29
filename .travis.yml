@@ -1,7 +1,10 @@
 ---
 language: python
 
-sudo: false
+sudo: required
+
+services:
+  - docker
 
 python:
   - "2.7"
@@ -9,10 +12,19 @@ python:
   - "3.5"
   - "3.6"
 
+before_install:
+  - docker build -t lbigg/ci-travis .
+  - docker run -d -p 127.0.0.1:80 lbigg/ci-travis /bin/sh -c "cd /app; python test.py"
+  - docker ps -a
+  - docker run lbigg/ci-travis /bin/sh -c "cd /app; python test.py"
+
 matrix:
   allow_failures:
-    - python: "2.7"
+    - python: 
+      - "2.7"
+      - "3.4"
+      - "3.6"
 
 script:
-  - python -m unittest test.py
+  - python test.py
 
