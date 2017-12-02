@@ -1,0 +1,34 @@
+---
+language: python
+
+sudo: required
+
+services:
+  - docker
+
+python:
+  - "3.4"
+  - "3.5"
+  - "3.6"
+
+before_install:
+  - docker build -t lbigg/ci-travis .
+  - docker run -d lbigg/ci-travis /bin/sh -c "cd /app; python3 test.py"
+  - docker ps -a
+  - docker run lbigg/ci-travis /bin/sh -c "cd /app; python3 test.py"
+
+matrix:
+  allow_failures:
+    - python: 
+      - "3.4"
+      - "3.6"
+
+script:
+  - python3 test.py
+
+after_success:
+  if ["$TRAVIS_BRANCH" == "master"]; then
+  docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+  docker push lbigg/ci-travis;
+  fi
+
